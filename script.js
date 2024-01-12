@@ -13,6 +13,7 @@ function convertToRoman(num) {
 
   for (let key in obj) {
     const [symbol, value] = obj[key];
+
     while (num >= value) {
       result += symbol;
       num -= value;
@@ -20,11 +21,12 @@ function convertToRoman(num) {
 
     // Check for subtraction cases (e.g., IV, IX, XL, XC, etc.)
     const nextKey = (parseInt(key) + 1).toString();
+
     if (nextKey in obj) {
       const [nextSymbol, nextValue] = obj[nextKey];
       const difference = value - nextValue;
 
-      if (num >= difference) {
+      if (num >= difference && difference >= nextValue) {
         result += nextSymbol + symbol;
         num -= difference;
       }
