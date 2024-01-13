@@ -11,22 +11,23 @@ function convertToRoman(num) {
 
   let result = '';
 
-  for (let key in obj) {
-    const [symbol, value] = obj[key];
+  for (let i = 0; i < Object.keys(obj).length; i++) {
+    const symbol = obj[i][0];
+    const value = obj[i][1];
 
     while (num >= value) {
       result += symbol;
       num -= value;
     }
 
-    // Check for subtraction cases (e.g., IV, IX, XL, XC, etc.)
-    const nextKey = (parseInt(key) + 1).toString();
+    // Check for subtractive notation (e.g., IV for 4, IX for 9, etc.)
+    if (i % 2 === 0 && i < Object.keys(obj).length - 2) {
+      const nextSymbol = obj[i + 2][0];
+      const nextValue = obj[i + 2][1];
 
-    if (nextKey in obj) {
-      const [nextSymbol, nextValue] = obj[nextKey];
       const difference = value - nextValue;
 
-      if (num >= difference && difference >= nextValue) {
+      if (num >= difference) {
         result += nextSymbol + symbol;
         num -= difference;
       }
@@ -36,11 +37,4 @@ function convertToRoman(num) {
   return result;
 }
 
-// Test with input 36
-console.log(convertToRoman(36));
-
-// Test with input 798
-console.log(convertToRoman(798));
-
-// Export the function for use in other files (e.g., testing)
 module.exports = convertToRoman;
